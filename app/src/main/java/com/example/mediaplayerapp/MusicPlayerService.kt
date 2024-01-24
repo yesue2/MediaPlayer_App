@@ -1,5 +1,6 @@
 package com.example.mediaplayerapp
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -22,6 +23,7 @@ class MusicPlayerService : Service() {
         }
     }
     // 서비스를 startService()로 생성하든, bindService()로 생성하든 onCreate()는 처음에 한 번만 실행
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
 
@@ -30,7 +32,7 @@ class MusicPlayerService : Service() {
     }
 
     // 바인드
-    override fun onBind(intent: Intent?): IBinder? {
+    override fun onBind(intent: Intent?): IBinder {
         return mBinder
     }
 
@@ -47,6 +49,8 @@ class MusicPlayerService : Service() {
         }
     }
 
+    @SuppressLint("ForegroundServiceType")
+    @RequiresApi(Build.VERSION_CODES.O)
     fun startForegroundService() {
         // 안드로이드O 부터는 반드시 알림 채널을 사용하여 사용자에게 알림을 보여줘야 함
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
